@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1054373527184",
+    "project_id": "sabormaps-907d4",
+    "storage_bucket": "sabormaps-907d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054373527184:android:bed34bce2e30e27fcee215",
+        "android_client_info": {
+          "package_name": "com.example.sabormaps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrJpacUgxwtQQQU16677S3A9bGUOyqbBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
