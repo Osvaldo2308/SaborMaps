@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             );
           } else {
             // Redirigir a la pantalla de inicio de sesión después de la inicialización
-            return IniciarSesion(); // Cambia esta pantalla por la tuya
+            return PaginaCarga(); // Cambia esta pantalla por la tuya
           }
         },
       ),
