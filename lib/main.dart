@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'paginas/pagina_carga.dart'; // Importa la pantalla de carga desde su ubicación
-import 'paginas/iniciar_sesion.dart'; // Importa la pantalla de inicio de sesión
+import 'paginas/login/iniciar_sesion.dart'; // Importa la pantalla de inicio de sesión (cámbiala por la tuya)
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Inicializar Firebase
   runApp(MyApp());
 }
 
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else {
-            return PaginaCarga(); // Muestra la pantalla de inicio de sesión si todo está correcto
+            // Redirigir a la pantalla de inicio de sesión después de la inicialización
+            return IniciarSesion(); // Cambia esta pantalla por la tuya
           }
         },
       ),
