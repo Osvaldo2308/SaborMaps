@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'paginas/pagina_carga.dart'; // Importa la pantalla de carga desde su ubicación
-import 'paginas/login/iniciar_sesion.dart'; // Importa la pantalla de inicio de sesión (cámbiala por la tuya)
+//import 'paginas/login/iniciar_sesion.dart'; // Importa la pantalla de inicio de sesión (cámbiala por la tuya)
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
