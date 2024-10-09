@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../menu/map_screen.dart'; // Pantalla de Mapa
-import '../../menu/main1.dart'; // Pantalla de Restaurante
+import 'menu_restaurante.dart'; // Pantalla de Restaurante
 
 void main() {
   runApp(MyApp());
@@ -99,7 +99,7 @@ class MenuScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RestaurantApp()),
+                  MaterialPageRoute(builder: (context) => RestaurantMenuPage()),
                 );
               },
               child: Text('Restaurante', style: TextStyle(fontSize: 18)),

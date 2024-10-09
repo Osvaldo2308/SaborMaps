@@ -33,7 +33,6 @@ dependencies:
 
   google_maps_flutter: ^2.2.0 # O la última versión disponible
   http: ^0.13.3 # Dependencia para hacer peticiones HTTP
-
   intl: ^0.18.1  # Reemplaza por la versión que necesites
 
 
@@ -43,10 +42,7 @@ dependencies:
 
   firebase_auth: ^5.3.0
   firebase_core: ^3.5.0
-  google_maps_flutter: ^2.2.0
-  http: ^0.13.3
-
-  intl: ^0.18.1
+  cloud_firestore: ^5.4.4
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +70,12 @@ flutter:
   assets:
     - images/im1.jpg
     - images/icons.png
+    - assets/2.jpg  # Asegúrate de que esta imagen esté en la carpeta 'assets'
+    - assets/1.jpg
+    - assets/3.jpeg
+    - assets/4.jpg
+    - assets/5.jpeg
+    - assets/6.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -100,13 +102,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-  flutter:
-   uses-material-design: true
 
-   assets:
-    - assets/2.jpg  # Asegúrate de que esta imagen esté en la carpeta 'assets'
-    - assets/1.jpg
-    - assets/3.jpeg
-    - assets/4.jpg
-    - assets/5.jpeg
-    - assets/6.jpg
+    

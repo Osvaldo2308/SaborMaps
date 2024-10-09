@@ -1,8 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+        android:enableOnBackInvokedCallback="true"
         android:label="sabormaps"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyD62D5HVjjh-cTUeg9t_2OIqL7lV22mpns"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
