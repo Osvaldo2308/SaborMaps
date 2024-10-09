@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'map_screen.dart'; // Pantalla de Mapa
-import 'main1.dart'; // Pantalla de Restaurante
+import '../../menu/map_screen.dart'; // Pantalla de Mapa
+import '../../menu/main1.dart'; // Pantalla de Restaurante
 
 void main() {
   runApp(MyApp());

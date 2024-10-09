@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'crear_usuario.dart';
-import '../maps/map.dart';
+import '../maps/map_screen.dart';
 
 class IniciarSesion extends StatefulWidget {
   @override
@@ -40,7 +40,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
         // Si el inicio de sesión es exitoso, navega a otra pantalla
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => PantallaEjemplo()),
+          MaterialPageRoute(builder: (context) => MapScreen()),
         );
       } on FirebaseAuthException catch (e) {
         _handleFirebaseAuthError(e); // Maneja el error específico de Firebase
