@@ -31,11 +31,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  google_maps_flutter: ^2.2.0 # O la última versión disponible
-  http: ^0.13.3 # Dependencia para hacer peticiones HTTP
-
-  intl: ^0.18.1  # Reemplaza por la versión que necesites
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -75,6 +70,8 @@ flutter:
     - images/im1.jpg
     - images/icons.png
 
+    
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -100,13 +97,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-  flutter:
-   uses-material-design: true
-
-   assets:
-    - assets/2.jpg  # Asegúrate de que esta imagen esté en la carpeta 'assets'
-    - assets/1.jpg
-    - assets/3.jpeg
-    - assets/4.jpg
-    - assets/5.jpeg
-    - assets/6.jpg
