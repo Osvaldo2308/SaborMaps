@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'reservacion.dart'; // Importa el archivo de reservación para la navegación
+import '../../menu/reservacion.dart'; // Importa el archivo de reservación para la navegación
 
 class RestaurantMenuPage extends StatelessWidget {
   @override
