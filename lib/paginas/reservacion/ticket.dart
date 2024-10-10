@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../../paginas/maps/map_screen.dart';
 class ReservationConfirmationPage extends StatelessWidget {
   final String restaurantName;
   final String numPeople;
@@ -43,7 +43,11 @@ class ReservationConfirmationPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('/')); // Regresa al menú principal
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()), // Asegúrate de que MapScreen esté bien importado
+                    (Route<dynamic> route) => false, // Remover todas las rutas anteriores
+                  );// Regresa al menú principal
                 },
                 child: Text('OK'),
                 style: ElevatedButton.styleFrom(

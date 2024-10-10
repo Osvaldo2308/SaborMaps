@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'reservacion.dart'; // Importa el archivo de reservación para la navegación
 
 class RestaurantMenuPage extends StatelessWidget {
+  final String restaurantName;
+  RestaurantMenuPage({required this.restaurantName});
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF1B1F3B),
-        title: Text('Menu'),
+        title: Text('Menu $restaurantName'),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -70,7 +74,7 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: 'Alitas'),
+                          builder: (context) => ReservationPage(restaurantName: restaurantName),
                         ),
                       );
                     },
@@ -82,7 +86,7 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: 'Micheladas'),
+                          builder: (context) => ReservationPage(restaurantName:restaurantName ),
                         ),
                       );
                     },
@@ -94,7 +98,7 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: 'Pizza'),
+                          builder: (context) => ReservationPage(restaurantName: restaurantName),
                         ),
                       );
                     },
@@ -106,7 +110,7 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: 'Nachos'),
+                          builder: (context) => ReservationPage(restaurantName: restaurantName),
                         ),
                       );
                     },
@@ -118,7 +122,7 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: 'Tacos'),
+                          builder: (context) => ReservationPage(restaurantName: restaurantName),
                         ),
                       );
                     },

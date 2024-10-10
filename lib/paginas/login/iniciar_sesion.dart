@@ -42,7 +42,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
         // Si el inicio de sesión es exitoso, navega a otra pantalla
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MyApp()),
+          MaterialPageRoute(builder: (context) => MapScreen()),
         );
       } on FirebaseAuthException catch (e) {
         _handleFirebaseAuthError(e); // Maneja el error específico de Firebase
