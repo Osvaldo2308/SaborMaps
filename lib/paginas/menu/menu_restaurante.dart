@@ -74,7 +74,8 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: restaurantName),
+                          builder: (context) => ReservationPage(restaurantName: restaurantName,
+                          selectedMenuItem:'Alitas'),
                         ),
                       );
                     },
@@ -86,7 +87,8 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName:restaurantName ),
+                          builder: (context) => ReservationPage(restaurantName:restaurantName,
+                          selectedMenuItem:'Micheladas' ),
                         ),
                       );
                     },
@@ -98,7 +100,8 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: restaurantName),
+                          builder: (context) => ReservationPage(restaurantName: restaurantName,
+                          selectedMenuItem: 'Pizza'),
                         ),
                       );
                     },
@@ -110,7 +113,8 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: restaurantName),
+                          builder: (context) => ReservationPage(restaurantName: restaurantName,
+                          selectedMenuItem: 'Nachos'),
                         ),
                       );
                     },
@@ -122,7 +126,8 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: restaurantName),
+                          builder: (context) => ReservationPage(restaurantName: restaurantName,
+                          selectedMenuItem: 'Tacos'),
                         ),
                       );
                     },

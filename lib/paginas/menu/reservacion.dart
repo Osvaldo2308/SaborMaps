@@ -7,8 +7,8 @@ import '../reservacion/ticket.dart';
 
 class ReservationPage extends StatefulWidget {
   final String restaurantName;
-
-  ReservationPage({required this.restaurantName});
+  final String selectedMenuItem; // Nuevo parámetro
+  ReservationPage({required this.restaurantName, required this.selectedMenuItem});
 
   @override
   _ReservationPageState createState() => _ReservationPageState();
@@ -20,8 +20,27 @@ class _ReservationPageState extends State<ReservationPage> {
   TextEditingController _timeController = TextEditingController();
   TextEditingController _commentController = TextEditingController();
 
+   // Lista de productos adicionales y su estado
+  List<String> additionalProducts = ['Micheladas', 'Pizza', 'Nachos', 'Tacos'];
+  Map<String, bool> selectedProducts = {};
+
   // Instancia de Firestore
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializar el mapa de productos adicionales
+    // Verifica si el producto seleccionado está en la lista y lo elimina
+    if (additionalProducts.contains(widget.selectedMenuItem)) {
+      additionalProducts.remove(widget.selectedMenuItem);
+    }
+
+    // Inicializar el mapa de productos adicionales
+    additionalProducts.forEach((product) {
+      selectedProducts[product] = false;
+    });
+  }
 
   // Función para guardar la reservación en Firestore
   Future<void> _saveReservation() async {
@@ -31,11 +50,18 @@ class _ReservationPageState extends State<ReservationPage> {
     );
     return;
   }
+  List<String> selectedAdditionalProducts = selectedProducts.entries
+        .where((entry) => entry.value == true)
+        .map((entry) => entry.key)
+        .toList();
+
 
     try {
     // Guardar la reservación en Firestore
     await _firestore.collection('reservaciones').add({
       'restaurante': widget.restaurantName,
+      'menu_seleccionado': widget.selectedMenuItem,
+      'productos_adicionales': selectedAdditionalProducts,
       'numero_personas': int.parse(_numPeopleController.text),
       'fecha': _dateController.text,
       'hora': _timeController.text,
@@ -49,10 +75,12 @@ class _ReservationPageState extends State<ReservationPage> {
       MaterialPageRoute(
         builder: (context) => ReservationConfirmationPage(
           restaurantName: widget.restaurantName,
+          selectedMenuItem: widget.selectedMenuItem,
           numPeople: _numPeopleController.text,
           date: _dateController.text,
           time: _timeController.text,
           comment: _commentController.text,
+          additionalProducts: selectedAdditionalProducts,
         ),
       ),
     );
@@ -68,7 +96,11 @@ class _ReservationPageState extends State<ReservationPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF1B1F3B),
-        title: Text(widget.restaurantName),
+        title: Text(widget.restaurantName,
+        style: TextStyle(
+        color: Colors.white, // Aquí especificas el color blanco
+        ),
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -86,10 +118,11 @@ class _ReservationPageState extends State<ReservationPage> {
               backgroundImage: AssetImage('assets/2.jpg'), // Imagen del restaurante
             ),
             SizedBox(height: 20),
+
             Text(
-              'Reservación',
+              'Has seleccionado: ${widget.selectedMenuItem}',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -111,6 +144,32 @@ class _ReservationPageState extends State<ReservationPage> {
               ],
             ),
             SizedBox(height: 15),
+
+           Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Seleccione productos adicionales:',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Column(
+                  children: additionalProducts.map((product) {
+                    return CheckboxListTile(
+                      title: Text(product),
+                      value: selectedProducts[product],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          selectedProducts[product] = value ?? false;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 20),
 
             // Campo de Fecha (Selector de Calendario)
             TextFormField(

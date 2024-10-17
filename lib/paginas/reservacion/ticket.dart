@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../../paginas/maps/map_screen.dart';
 class ReservationConfirmationPage extends StatelessWidget {
   final String restaurantName;
+  final String selectedMenuItem;
   final String numPeople;
   final String date;
   final String time;
   final String comment;
+  final List<String> additionalProducts; // Nuevo parámetro
 
   ReservationConfirmationPage({
     required this.restaurantName,
@@ -13,6 +15,8 @@ class ReservationConfirmationPage extends StatelessWidget {
     required this.date,
     required this.time,
     required this.comment,
+    required this.selectedMenuItem,
+    required this.additionalProducts,
   });
 
   @override
@@ -33,7 +37,19 @@ class ReservationConfirmationPage extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
+
             Text('Restaurante: $restaurantName', style: TextStyle(fontSize: 18)),
+            Text('Alimentos: $selectedMenuItem', style: TextStyle(fontSize: 18)),
+            // Mostrar productos adicionales solo si hay elementos seleccionados
+            if (additionalProducts.isNotEmpty) 
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10),
+                  Text('Productos adicionales:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  ...additionalProducts.map((product) => Text(product, style: TextStyle(fontSize: 18))).toList(),
+                ],
+              ),
             Text('N° de Personas: $numPeople', style: TextStyle(fontSize: 18)),
             Text('Fecha: $date', style: TextStyle(fontSize: 18)),
             Text('Hora: $time', style: TextStyle(fontSize: 18)),
