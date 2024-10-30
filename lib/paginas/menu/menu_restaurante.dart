@@ -11,7 +11,10 @@ class RestaurantMenuPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF1B1F3B),
-        title: Text('Menu $restaurantName'),
+        title: Text('Menu $restaurantName',
+        style: TextStyle(
+        color: Colors.white, // Aquí especificas el color blanco
+        ),),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
