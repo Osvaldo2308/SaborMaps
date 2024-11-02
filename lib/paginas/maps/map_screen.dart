@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:location/location.dart'; // Para obtener la ubicación actual
 
-import '../menu/menu_restaurante.dart';
+import '/nuevo/menurestaurante.dart';
 
 class MapScreen extends StatefulWidget {
   @override

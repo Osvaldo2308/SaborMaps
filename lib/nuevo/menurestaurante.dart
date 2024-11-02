@@ -1,32 +1,37 @@
 import 'package:flutter/material.dart';
-import 'reservacion.dart'; // Importa el archivo de reservación para la navegación
+import '../menu/reservacion.dart';
+import 'profile.dart';
+import 'add_review.dart';
 
 class RestaurantMenuPage extends StatelessWidget {
   final String restaurantName;
+  final List<String> userReviews = [];
+
   RestaurantMenuPage({required this.restaurantName});
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF1B1F3B),
-        title: Text('Menu $restaurantName',
-        style: TextStyle(
-        color: Colors.white, // Aquí especificas el color blanco
-        ),),
+        title: Text('$restaurantName Menu'),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Lógica para regresar o salir
+            Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: () {
-              // Lógica para cuenta o perfil
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserProfilePage(userReviews: userReviews),
+                ),
+              );
             },
           ),
         ],
@@ -36,11 +41,7 @@ class RestaurantMenuPage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF06141B), // Color más claro
-              Color(0xFF11212D), // Color intermedio
-              Color(0xFF253745), // Color más fuerte
-            ],
+            colors: [Color(0xFF06141B), Color(0xFF11212D), Color(0xFF253745)],
           ),
         ),
         padding: const EdgeInsets.all(8.0),
@@ -63,12 +64,28 @@ class RestaurantMenuPage extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RestaurantReviewsPage(userReviews: userReviews),
+                  ),
+                );
+              },
+              child: Text('Ver Críticas'),
+              style: ElevatedButton.styleFrom(
+                 backgroundColor: Color(0xFF1B1F3B),
+              ),
+            ),
+            SizedBox(height: 20),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
-                childAspectRatio: 1.40,
-                crossAxisSpacing: 70,
-                mainAxisSpacing: 70,
+                childAspectRatio: 1.4,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
                 children: [
                   RestaurantMenuItem(
                     imageUrl: 'assets/1.jpg',
@@ -77,8 +94,7 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: restaurantName,
-                          selectedMenuItem:'Alitas'),
+                          builder: (context) => ReservationPage(restaurantName: 'Alitas'),
                         ),
                       );
                     },
@@ -90,53 +106,25 @@ class RestaurantMenuPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName:restaurantName,
-                          selectedMenuItem:'Micheladas' ),
+                          builder: (context) => ReservationPage(restaurantName: 'Micheladas'),
                         ),
                       );
                     },
                   ),
-                  RestaurantMenuItem(
-                    imageUrl: 'assets/4.jpg',
-                    title: 'Pizza',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: restaurantName,
-                          selectedMenuItem: 'Pizza'),
-                        ),
-                      );
-                    },
-                  ),
-                  RestaurantMenuItem(
-                    imageUrl: 'assets/5.jpeg',
-                    title: 'Nachos',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: restaurantName,
-                          selectedMenuItem: 'Nachos'),
-                        ),
-                      );
-                    },
-                  ),
-                  RestaurantMenuItem(
-                    imageUrl: 'assets/6.jpg',
-                    title: 'Tacos',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ReservationPage(restaurantName: restaurantName,
-                          selectedMenuItem: 'Tacos'),
-                        ),
-                      );
-                    },
-                  ),
+                  // Agrega más items si es necesario
                 ],
               ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddReviewPage(userReviews: userReviews),
+                  ),
+                );
+              },
+              child: Text('Agregar Crítica'),
             ),
           ],
         ),
@@ -185,6 +173,50 @@ class RestaurantMenuItem extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class RestaurantReviewsPage extends StatelessWidget {
+  final List<String> userReviews;
+
+  RestaurantReviewsPage({required this.userReviews});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF1B1F3B),
+        title: Text('Críticas de Restaurantes'),
+        centerTitle: true,
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: userReviews.isEmpty
+            ? Center(
+                child: Text(
+                  'No hay críticas disponibles',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              )
+            : ListView.builder(
+                itemCount: userReviews.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Color(0xFF253745),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        userReviews[index],
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
+                },
+              ),
+      ),
+      backgroundColor: Color(0xFF06141B),
     );
   }
 }
