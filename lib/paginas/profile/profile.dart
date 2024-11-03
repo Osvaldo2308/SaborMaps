@@ -70,6 +70,7 @@ class UserProfilePage extends StatelessWidget {
                 );
               },
               child: Text('Ver Mis Críticas'),
+              /* Prueba de componentes */ 
             ),
           ],
         ),
