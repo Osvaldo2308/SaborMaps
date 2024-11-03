@@ -3,7 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:location/location.dart'; // Para obtener la ubicación actual
-
 import '../menu/menu_restaurante.dart';
 
 class MapScreen extends StatefulWidget {
@@ -88,6 +87,7 @@ class _MapScreenState extends State<MapScreen> {
                   MaterialPageRoute(
                     builder: (context) => RestaurantMenuPage(
                       restaurantName: place['name'],
+                      restaurantId: place['place_id'],
                     ),
                   ),
                 );

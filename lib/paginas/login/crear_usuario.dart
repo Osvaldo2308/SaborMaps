@@ -36,12 +36,16 @@ class _RegistroScreenState extends State<RegistroScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
+        
 
-        print(userCredential);
+        // print(userCredential);
 
         User? user = userCredential.user; // Obtén el objeto User
   if (user != null) {
-    print('Usuario registrado exitosamente: ${user.uid}');
+    await user.updateDisplayName(_nameController.text.trim());
+        await user.reload();
+        user = _auth.currentUser;
+    // print('Usuario registrado exitosamente: ${user.uid}');
     // Continuar con el flujo...
   } else {
     print('Error: el usuario es null');
