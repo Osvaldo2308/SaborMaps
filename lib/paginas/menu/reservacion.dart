@@ -21,7 +21,7 @@ class _ReservationPageState extends State<ReservationPage> {
   TextEditingController _commentController = TextEditingController();
 
    // Lista de productos adicionales y su estado
-  List<String> additionalProducts = ['Micheladas', 'Pizza', 'Nachos', 'Tacos'];
+  List<String> additionalProducts = ['Micheladas', 'Pizza', 'Nachos', 'Tacos', 'alitas'];
   Map<String, bool> selectedProducts = {};
 
   // Instancia de Firestore
@@ -178,7 +178,7 @@ class _ReservationPageState extends State<ReservationPage> {
               decoration: InputDecoration(
                 labelText: 'Fecha:',
                 prefixIcon: Icon(Icons.calendar_today),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(), 
               ),
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
