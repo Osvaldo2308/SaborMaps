@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'user_reviews_page.dart'; // Asegúrate de que la ruta sea correcta para UserReviewsPage
 
 class AddReviewPage extends StatefulWidget {
-  final String restaurantId; // ID del restaurante
-  final String restaurantName; // Nombre del restaurante
-  
+  final String restaurantId;
+  final String restaurantName;
+
   AddReviewPage({Key? key, required this.restaurantId, required this.restaurantName}) : super(key: key);
 
   @override
@@ -15,8 +16,7 @@ class AddReviewPage extends StatefulWidget {
 class _AddReviewPageState extends State<AddReviewPage> {
   final _reviewController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  double _rating = 0; // Puntuación en estrellas
+  double _rating = 0;
 
   @override
   void dispose() {
@@ -25,7 +25,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
   }
 
   Future<void> _addReview() async {
-    if (_reviewController.text.isEmpty || _rating == 0) return; // Verifica que la crítica y la puntuación sean válidas
+    if (_reviewController.text.isEmpty || _rating == 0) return;
 
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -36,27 +36,33 @@ class _AddReviewPageState extends State<AddReviewPage> {
           duration: Duration(seconds: 2),
         ),
       );
-      return; // No continuar si no hay usuario autenticado
+      return;
     }
 
-    // Añadir la crítica a la colección "reviews"
     await _firestore.collection('reviews').add({
-      'restaurantId': widget.restaurantId, // ID del restaurante
+      'restaurantId': widget.restaurantId,
       'review': _reviewController.text,
       'restaurantName': widget.restaurantName,
       'userId': user.uid,
-      'rating': _rating, // Agregar la puntuación
+      'rating': _rating,
       'timestamp': FieldValue.serverTimestamp(),
     });
 
     _reviewController.clear();
-    _rating = 0; // Reiniciar la puntuación
+    _rating = 0;
 
-    // Mostrar un mensaje de éxito
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Crítica agregada exitosamente.'),
         duration: Duration(seconds: 2),
+      ),
+    );
+
+    // Redirige a la página de UserReviewsPage
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserReviewsPage(restaurantId: widget.restaurantId),
       ),
     );
   }
@@ -65,20 +71,19 @@ class _AddReviewPageState extends State<AddReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agregar Crítica'),
+        title: Text('Agregar Crítica', style: TextStyle(color: Colors.white)), // Título en blanco
+        backgroundColor: Color(0xFF1B1F3B), // Color de fondo del AppBar
+        iconTheme: IconThemeData(color: Colors.white), // Color blanco para la flecha
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Muestra el nombre del restaurante
             Text(
               'Crítica para: ${widget.restaurantName}',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
-
-            // Selector de estrellas
+            SizedBox(height: 40),
             Text('Rating: ${_rating.toStringAsFixed(1)} ⭐'),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -90,14 +95,13 @@ class _AddReviewPageState extends State<AddReviewPage> {
                   ),
                   onPressed: () {
                     setState(() {
-                      _rating = index + 1.0; // Las estrellas van de 1 a 5
+                      _rating = index + 1.0;
                     });
                   },
                 );
               }),
             ),
             SizedBox(height: 20),
-
             TextField(
               controller: _reviewController,
               decoration: InputDecoration(
@@ -105,10 +109,17 @@ class _AddReviewPageState extends State<AddReviewPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 60),
             ElevatedButton(
               onPressed: _addReview,
-              child: Text('Agregar Crítica'),
+              child: Text('Agregar Crítica', style: TextStyle(color: Colors.white),),
+              style: ElevatedButton.styleFrom(
+    backgroundColor: Color(0xFF1B1F3B),
+    padding: EdgeInsets.symmetric(vertical: 25, horizontal: 100),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
             ),
           ],
         ),

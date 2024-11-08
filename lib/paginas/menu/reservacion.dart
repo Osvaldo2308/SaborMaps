@@ -102,19 +102,20 @@ class _ReservationPageState extends State<ReservationPage> {
         ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+       leading: IconButton(
+  icon: Icon(Icons.arrow_back, color: Colors.white), // Cambia el color de la flecha a blanco
+  onPressed: () {
+    Navigator.pop(context);
+  },
+),
+
       ),
       body: SingleChildScrollView( // Permite el desplazamiento
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             CircleAvatar(
-              radius: 120,
+              radius: 100,
               backgroundImage: AssetImage('assets/2.jpg'), // Imagen del restaurante
             ),
             SizedBox(height: 20),
@@ -234,17 +235,21 @@ class _ReservationPageState extends State<ReservationPage> {
             SizedBox(height: 20),
 
             // Botón de Reservar
-            ElevatedButton(
-              onPressed: _saveReservation, // Llama a la función para guardar en Firestore
-              child: Text('Reservar'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF1B1F3B),
-                padding: EdgeInsets.symmetric(vertical: 25, horizontal: 100),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
+           ElevatedButton(
+  onPressed: _saveReservation, // Llama a la función para guardar en Firestore
+  child: Text(
+    'Reservar',
+    style: TextStyle(color: Colors.white), // Cambia el color del texto a blanco
+  ),
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Color(0xFF1B1F3B),
+    padding: EdgeInsets.symmetric(vertical: 25, horizontal: 100),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+),
+
           ],
         ),
       ),
