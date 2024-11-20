@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../reviews/user_reviews_page.dart';
 import '../reviews/user_review.dart'; // Asegúrate de importar la nueva página
 
 class UserProfilePage extends StatelessWidget {
@@ -45,18 +44,6 @@ class UserProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 30),
 
-            // Botón para ver críticas
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => UserReviewsPage(restaurantId: restaurantId),
-            //       ),
-            //     );
-            //   },
-            //   child: Text('Ver Críticas del Restaurante'),
-            // ),
 
             // Botón para ver críticas del usuario
             ElevatedButton(

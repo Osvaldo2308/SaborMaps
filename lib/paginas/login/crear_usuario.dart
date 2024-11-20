@@ -19,77 +19,71 @@ class _RegistroScreenState extends State<RegistroScreen> {
   bool _isKeyboardVisible = false;
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  bool _acceptedTerms = false;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isLoading = false;
 
-  // Método para registrar un usuario con Firebase
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
+      if (!_acceptedTerms) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Debes aceptar los Términos y Condiciones.')),
+        );
+        return;
+      }
+
       setState(() {
         _isLoading = true;
       });
 
       try {
-        // Crear un nuevo usuario en Firebase Auth
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
-        
 
-        // print(userCredential);
-
-        User? user = userCredential.user; // Obtén el objeto User
-  if (user != null) {
-    await user.updateDisplayName(_nameController.text.trim());
-        await user.reload();
-        user = _auth.currentUser;
-    // print('Usuario registrado exitosamente: ${user.uid}');
-    // Continuar con el flujo...
-  } else {
-    print('Error: el usuario es null');
-  }
+        User? user = userCredential.user;
+        if (user != null) {
+          await user.updateDisplayName(_nameController.text.trim());
+          await user.reload();
+          user = _auth.currentUser;
+        }
 
         print('Usuario registrado exitosamente: ${userCredential.user?.uid}');
 
-        // Registro exitoso: Mostrar SnackBar y redirigir
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Registro exitoso. Redirigiendo al inicio de sesión...')),
         );
 
-        // Añade un pequeño retraso para que el mensaje del SnackBar se muestre
         await Future.delayed(Duration(seconds: 2));
 
-        // Redirigir a la pantalla de inicio de sesión
-        print('Redirigiendo a la pantalla de inicio de sesión...');
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => IniciarSesion()), // Cambia esto a tu pantalla de inicio de sesión
+          MaterialPageRoute(builder: (context) => IniciarSesion()),
           (Route<dynamic> route) => false,
         );
-
       } on FirebaseAuthException catch (e) {
         setState(() {
           _isLoading = false;
         });
-          String errorMessage = '';
+        String errorMessage = '';
 
-          switch (e.code) {
-            case 'email-already-in-use':
-              errorMessage = 'Este correo ya está en uso.';
-              break;
-            case 'invalid-email':
-              errorMessage = 'El formato del correo es inválido.';
-              break;
-            case 'operation-not-allowed':
-              errorMessage = 'El registro de cuentas con correo y contraseña no está habilitado.';
-              break;
-            case 'weak-password':
-              errorMessage = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.';
-              break;
-            default:
-              errorMessage = 'Ha ocurrido un error. Por favor, intenta de nuevo.';
-          }
+        switch (e.code) {
+          case 'email-already-in-use':
+            errorMessage = 'Este correo ya está en uso.';
+            break;
+          case 'invalid-email':
+            errorMessage = 'El formato del correo es inválido.';
+            break;
+          case 'operation-not-allowed':
+            errorMessage = 'El registro de cuentas con correo y contraseña no está habilitado.';
+            break;
+          case 'weak-password':
+            errorMessage = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.';
+            break;
+          default:
+            errorMessage = 'Ha ocurrido un error. Por favor, intenta de nuevo.';
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('$errorMessage')),
         );
@@ -102,6 +96,94 @@ class _RegistroScreenState extends State<RegistroScreen> {
         );
       }
     }
+  }
+
+  Future<void> _showTermsAndConditions() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Términos y Condiciones'),
+          content: Container(
+            width: double.maxFinite,
+            child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                  Text(
+                    'Términos y Condiciones',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Bienvenido/a a nuestra aplicación de recomendaciones de restaurantes. '
+                    'Al utilizar esta aplicación, aceptas los siguientes términos y condiciones:',
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    '1. Uso de la ubicación:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'La aplicación utilizará tu ubicación para mostrar restaurantes cercanos. '
+                    'Asegúrate de otorgar los permisos necesarios para una experiencia óptima.',
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    '2. Publicación de comentarios:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Puedes publicar comentarios sobre los restaurantes que visitas. '
+                    'Sin embargo, estos serán anónimos y no se asociarán a tu identidad.',
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    '3. Responsabilidad del contenido:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Nos reservamos el derecho de eliminar contenido ofensivo, inapropiado '
+                    'o que incumpla las políticas de uso de la aplicación.',
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    '4. Propósito de la aplicación:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'La aplicación tiene un propósito exclusivamente informativo. No garantizamos '
+                    'la calidad o disponibilidad de los servicios de los restaurantes recomendados.',
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    '5. Privacidad:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Los datos que recopilamos se utilizan únicamente para mejorar la experiencia '
+                    'de la aplicación. Consulta nuestra política de privacidad para más detalles.',
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Si tienes preguntas o inquietudes, puedes contactarnos a través de nuestro soporte técnico.',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ],
+            ),
+          ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -210,6 +292,38 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           return null;
                         },
                       ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _acceptedTerms,
+                            onChanged: (value) {
+                              setState(() {
+                                _acceptedTerms = value!;
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Acepto los ',
+                                style: TextStyle(color: Colors.black),
+                                children: [
+                                  TextSpan(
+                                    text: 'Términos y Condiciones',
+                                    style: TextStyle(
+                                      color: Colors.teal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = _showTermsAndConditions,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: 24),
                       _isLoading
                           ? Center(child: CircularProgressIndicator())
@@ -223,11 +337,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                                   ),
                                   backgroundColor: Colors.blue,
                                 ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    _register();  // Llamada al método de registro
-                                  }
-                                },
+                                onPressed: _register,
                                 child: Text(
                                   "Registrar",
                                   style: TextStyle(fontSize: 16, color: Colors.white),
@@ -269,7 +379,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
     );
   }
 
-  // Campo de contraseña con visibilidad toggle y validaciones
   Widget _buildPasswordField({
     required String label,
     required TextEditingController controller,
@@ -304,7 +413,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
     );
   }
 
-  // Campo de confirmar contraseña con visibilidad toggle y validaciones
   Widget _buildConfirmPasswordField({
     required String label,
     required TextEditingController controller,
@@ -339,7 +447,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
     );
   }
 
-  // Método para construir campos de texto
   Widget _buildTextField({
     required String label,
     required TextEditingController controller,

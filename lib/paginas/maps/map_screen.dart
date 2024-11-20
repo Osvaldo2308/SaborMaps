@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:location/location.dart'; // Para obtener la ubicación actual
+import 'package:location/location.dart';
 import '../menu/menu_restaurante.dart';
 
 class MapScreen extends StatefulWidget {
@@ -12,53 +12,74 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? mapController;
-  LocationData? _currentLocation;  // Guardar la ubicación actual
+  LocationData? _currentLocation;
   List<Marker> _markers = [];
-  final Location location = Location();  // Instancia para obtener la ubicación
+  final Location location = Location();
 
   @override
   void initState() {
     super.initState();
-    _fetchUserLocation();  // Obtener la ubicación actual al iniciar la app
+    _initializeLocation(); // Verifica permisos y obtiene la ubicación inicial
   }
 
-  // Obtener la ubicación del usuario
-  Future<void> _fetchUserLocation() async {
+  // Método para verificar permisos y obtener la ubicación inicial
+  Future<void> _initializeLocation() async {
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    // Verifica si el servicio de ubicación está habilitado
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    // Verifica si el permiso de ubicación está concedido
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    // Obtén la ubicación actual del usuario
     final currentLocation = await location.getLocation();
     setState(() {
       _currentLocation = currentLocation;
-      
-      // Crear un marcador en la ubicación actual
-    _markers.add(
-      Marker(
-        markerId: MarkerId('currentLocation'),  // ID único del marcador
-        position: LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!),
-        infoWindow: InfoWindow(
-          title: 'Mi ubicación',
-        ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),  // Cambiar color del marcador
-      ),
-    );  // Almacenar la ubicación actual
-    });
-    _fetchNearbyRestaurants();  // Luego de obtener la ubicación, buscar restaurantes cercanos
-  }
 
-  // Al crear el mapa, centrar en la ubicación actual
-  void _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      mapController = controller;
-      if (_currentLocation != null) {
-        mapController?.animateCamera(
-          CameraUpdate.newLatLngZoom(
-            LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!),
-            17.0,
+      // Agrega un marcador en la ubicación actual del usuario
+      _markers.add(
+        Marker(
+          markerId: MarkerId('currentLocation'),
+          position: LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!),
+          infoWindow: InfoWindow(
+            title: 'Mi ubicación',
           ),
-        );
-      }
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        ),
+      );
     });
+
+    // Inicia la obtención de restaurantes cercanos en segundo plano
+    _fetchNearbyRestaurants();
   }
 
-  // Función para obtener restaurantes cercanos a la ubicación actual del usuario
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    if (_currentLocation != null) {
+      mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!),
+          17.0,
+        ),
+      );
+    }
+  }
+
+  // Obtiene los restaurantes cercanos usando la ubicación actual del usuario
   Future<void> _fetchNearbyRestaurants() async {
     if (_currentLocation == null) return;
 
@@ -66,36 +87,42 @@ class _MapScreenState extends State<MapScreen> {
     final url =
         'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude},${_currentLocation!.longitude}&radius=1500&type=restaurant&key=$apiKey';
 
-    final response = await http.get(Uri.parse(url));
-    final json = jsonDecode(response.body);
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
 
-    if (json['results'] != null) {
-      setState(() {
-        _markers = (json['results'] as List).map((place) {
-          return Marker(
-            markerId: MarkerId(place['place_id']),
-            position: LatLng(
-              place['geometry']['location']['lat'],
-              place['geometry']['location']['lng'],
-            ),
-            infoWindow: InfoWindow(
-              title: place['name'],
-              snippet: place['vicinity'],
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RestaurantMenuPage(
-                      restaurantName: place['name'],
-                      restaurantId: place['place_id'],
+        setState(() {
+          _markers.addAll((json['results'] as List).map((place) {
+            return Marker(
+              markerId: MarkerId(place['place_id']),
+              position: LatLng(
+                place['geometry']['location']['lat'],
+                place['geometry']['location']['lng'],
+              ),
+              infoWindow: InfoWindow(
+                title: place['name'],
+                snippet: place['vicinity'],
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RestaurantMenuPage(
+                        restaurantName: place['name'],
+                        restaurantId: place['place_id'],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          );
-        }).toList();
-      });
+                  );
+                },
+              ),
+            );
+          }).toList());
+        });
+      } else {
+        print("Error al obtener datos de restaurantes: ${response.statusCode}");
+      }
+    } catch (error) {
+      print("Error al cargar restaurantes cercanos: $error");
     }
   }
 

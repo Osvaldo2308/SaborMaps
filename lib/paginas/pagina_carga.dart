@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login/iniciar_sesion.dart';
-import 'login/crear_usuario.dart';
+// import 'login/crear_usuario.dart';
 import 'dart:async'; // Importa esta librería si decides usar el temporizador en el futuro
 
 class PaginaCarga extends StatefulWidget {
