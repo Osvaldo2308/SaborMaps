@@ -126,11 +126,42 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Restaurantes Cercanos'),
+        title: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Contorno de texto con el color especificado
+            Text(
+              'Restaurantes Cercanos',
+              style: TextStyle(
+                color: Color(0xFF1B1F3B),  // Contorno de color
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    offset: Offset(1.0, 1.0),
+                    blurRadius: 3.0,
+                    color: Color(0xFF1B1F3B), // Color del contorno
+                  ),
+                ],
+              ),
+            ),
+            // Texto principal blanco con contorno
+            Text(
+              'Restaurantes Cercanos',
+              style: TextStyle(
+                color: Colors.white,  // Texto blanco
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Color(0xFF1B1F3B),  // Fondo del AppBar
+        elevation: 0,  // Eliminar sombra
       ),
       body: _currentLocation == null
           ? Center(child: CircularProgressIndicator())

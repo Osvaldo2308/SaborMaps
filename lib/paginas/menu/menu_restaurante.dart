@@ -56,15 +56,11 @@ class RestaurantMenuPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.all(10),
-              child: Image.asset(
-                'assets/2.jpg',
-                width: 200,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
+              CircleAvatar(
+              radius: 70,
+              backgroundImage: AssetImage('assets/2.jpg'), // Imagen del restaurante
             ),
+            SizedBox(height: 20),
             Text(
               'MENU',
               style: TextStyle(
