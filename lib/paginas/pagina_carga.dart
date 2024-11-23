@@ -21,7 +21,7 @@ class _PaginaCargaState extends State<PaginaCarga> {
     
   }
 void iniciarTemporizador() {
-    const duracion = Duration(seconds: 3); // Duración de 10 segundos
+    // const duracion = Duration(seconds: 3); // Duración de 10 segundos
     _timer = Timer.periodic(Duration(milliseconds: 30), (Timer timer) {
       setState(() {
         if (progreso >= 1) {

@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: ^3.5.4
 
 dependencies:
   flutter:
@@ -23,13 +23,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.14.1
   flutter_lints: ^2.0.0
-
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/icon/icon.png"
+  flutter_launcher_icons: ^0.14.1
 
 flutter:
   uses-material-design: true
@@ -42,5 +37,13 @@ flutter:
     - assets/4.jpg
     - assets/5.jpeg
     - assets/6.jpg
+flutter_launcher_icons:
+  image_path_android: "assets/icon/icon.png"  # Ruta del icono para Android
+  android: true  # Solo generar iconos para Android
+  adaptive_icon_background: "assets/icon/icon.png"  # Solo para Android 8.0+
+  adaptive_icon_foreground: "assets/icon/icon.png"  # Solo para Android 8.0+
+  adaptive_icon_foreground_inset: 16  # Solo para Android 8.0+
+  min_sdk_android: 21  # Asegura que la versión mínima sea 21 o superior
+
 
 

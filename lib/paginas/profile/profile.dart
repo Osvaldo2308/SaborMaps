@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-<<<<<<< HEAD
 import '../reviews/user_review.dart'; // Asegúrate de importar la nueva página
-=======
-import '../reviews/user_reviews_page.dart';
-import '../reviews/user_review.dart';
-import '../login/iniciar_sesion.dart'; // Asegúrate de importar la página de inicio de sesión
->>>>>>> de7bfa72a131c44e7e834f5722b27c49db6973a0
+// import '../reviews/user_reviews_page.dart';
+// import '../reviews/user_review.dart';
+import '../login/iniciar_sesion.dart'; //
 
 class UserProfilePage extends StatelessWidget {
   final List<String> userReviews;
@@ -80,14 +77,11 @@ class UserProfilePage extends StatelessWidget {
               'Correo: $email',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-<<<<<<< HEAD
             SizedBox(height: 30),
 
 
             // Botón para ver críticas del usuario
-=======
             SizedBox(height: 40),
->>>>>>> de7bfa72a131c44e7e834f5722b27c49db6973a0
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
